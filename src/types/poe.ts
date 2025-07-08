@@ -50,8 +50,6 @@ export interface PoeTradeQuery {
     stats?: QueryStat[];
     filters?: {
       type_filters?: any;
-      weapon_filters?: any;
-      armour_filters?: any;
       misc_filters?: {
         filters: {
           corrupted?: {
@@ -82,12 +80,6 @@ export interface ParsedItem {
   name: string;
   baseType: string;
   itemLevel: number;
-  requirements?: {
-    level?: number;
-    str?: number;
-    dex?: number;
-    int?: number;
-  };
   mods: ItemMod[];
   corrupted?: boolean;
   fractured?: boolean;

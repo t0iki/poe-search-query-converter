@@ -1,5 +1,9 @@
 import { ParsedItem, ItemMod } from '../types/poe';
 
+/**
+ * ItemParser - Parses Path of Exile item text
+ * Supports only Unique/Unknown items and Cluster Jewels
+ */
 export class ItemParser {
   private static extractNumbers(text: string): number[] {
     const numbers = text.match(/\d+(\.\d+)?/g);
@@ -17,7 +21,7 @@ export class ItemParser {
       if (text.startsWith('Adds') && text.includes('Passive Skills')) return 'enchant';
       if (text.includes('Added Passive Skills are Jewel Sockets')) return 'enchant';
       if (text.includes('Added Small Passive Skills grant')) return 'enchant';
-      if (text.startsWith('1 Added Passive Skill is')) return 'enchant';
+      // "1 Added Passive Skill is" はexplicitとして扱う
     }
     
     return 'explicit';
@@ -68,19 +72,9 @@ export class ItemParser {
       } else if (line.startsWith('Item Level:')) {
         parsedItem.itemLevel = parseInt(line.replace('Item Level:', '').trim());
       } else if (line.startsWith('Requirements:')) {
-        parsedItem.requirements = {};
+        // Skip Requirements section as it's not needed for Unique/Unknown items and Cluster Jewels
         i++;
         while (i < lines.length && lines[i] !== '--------') {
-          const reqLine = lines[i];
-          if (reqLine.startsWith('Level:')) {
-            parsedItem.requirements.level = parseInt(reqLine.replace('Level:', '').trim());
-          } else if (reqLine.startsWith('Str:')) {
-            parsedItem.requirements.str = parseInt(reqLine.replace('Str:', '').trim());
-          } else if (reqLine.startsWith('Dex:')) {
-            parsedItem.requirements.dex = parseInt(reqLine.replace('Dex:', '').trim());
-          } else if (reqLine.startsWith('Int:')) {
-            parsedItem.requirements.int = parseInt(reqLine.replace('Int:', '').trim());
-          }
           i++;
         }
         i--;
@@ -89,6 +83,7 @@ export class ItemParser {
       } else if (line === 'Fractured Item') {
         parsedItem.fractured = true;
       } else if (
+        // Skip item properties that are not relevant for Unique/Unknown items and Cluster Jewels
         !line.startsWith('Quality:') &&
         !line.startsWith('Physical Damage:') &&
         !line.startsWith('Elemental Damage:') &&
@@ -101,8 +96,8 @@ export class ItemParser {
         !line.includes('Sockets:') &&
         !line.startsWith('Radius:') &&
         !line.startsWith('Limited to:') &&
-        !line.startsWith('"') && // Skip flavor text starting with quotes
-        !line.startsWith('-') && // Skip flavor text starting with dash
+        !line.startsWith('"') && // Skip flavor text
+        !line.startsWith('-') && // Skip flavor text
         line !== 'Unique' &&
         line !== 'Rare' &&
         line !== 'Magic' &&
@@ -125,6 +120,9 @@ export class ItemParser {
                 !nextLine.startsWith('-') &&
                 nextLine !== 'Corrupted' &&
                 nextLine !== 'Fractured Item' &&
+                !nextLine.includes('Added Small Passive Skills also grant:') &&
+                !nextLine.includes('Added Small Passive Skills have') &&
+                !nextLine.startsWith('1 Added Passive Skill is') &&
                 !this.getModType(nextLine, parsedItem.baseType).includes('implicit') &&
                 !this.getModType(nextLine, parsedItem.baseType).includes('enchant') &&
                 !this.getModType(nextLine, parsedItem.baseType).includes('crafted') &&

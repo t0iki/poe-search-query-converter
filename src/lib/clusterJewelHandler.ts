@@ -38,6 +38,7 @@ export class ClusterJewelHandler {
     ['10% increased Damage while affected by a Herald', 26],
     ['Minions deal 10% increased Damage while you are affected by a Herald', 27],
     ['Exerted Attacks deal 20% increased Damage', 28],
+    ['6% increased Mana Reservation Efficiency of Skills', 54],
   ]);
 
   static isClusterJewel(baseType: string): boolean {

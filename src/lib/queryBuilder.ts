@@ -1,6 +1,10 @@
 import { PoeTradeQuery, ParsedItem, StatFilter } from '../types/poe';
 import { ClusterJewelHandler } from './clusterJewelHandler';
 
+/**
+ * QueryBuilder - Builds PoE trade API queries
+ * Supports only Unique/Unknown items and Cluster Jewels
+ */
 export class QueryBuilder {
   static buildQuery(parsedItem: ParsedItem, filtersByType: { [key: string]: StatFilter[] }): PoeTradeQuery {
     const query: PoeTradeQuery = {

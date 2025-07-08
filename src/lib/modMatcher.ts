@@ -1,6 +1,10 @@
 import { ModDatabase, PoeMod, ItemMod, StatFilter, ParsedItem } from '../types/poe';
 import { ClusterJewelHandler } from './clusterJewelHandler';
 
+/**
+ * ModMatcher - Matches item mods against the mod database
+ * Handles special cases for various unique items and cluster jewels
+ */
 export class ModMatcher {
   private modDatabase: ModDatabase;
   
@@ -174,12 +178,10 @@ export class ModMatcher {
       
       // Watcher's Eyeの場合
       if (parsedItem.name === "Watcher's Eye") {
-        // "while affected by"を含むmodをフィルタリング
-        const affectedByMods = itemMods.filter(mod => 
-          mod.text.toLowerCase().includes('while affected by')
-        );
+        // すべてのexplicit modを処理（while affected byだけでなく）
+        const explicitMods = itemMods.filter(mod => mod.type === 'explicit');
         
-        for (const itemMod of affectedByMods) {
+        for (const itemMod of explicitMods) {
           const matchedMod = this.findMatchingMod(itemMod);
           if (matchedMod) {
             const filter = this.createStatFilter(itemMod, matchedMod);
@@ -190,18 +192,28 @@ export class ModMatcher {
       
       // Forbidden FleshまたはForbidden Flameの場合
       if (parsedItem.name === "Forbidden Flesh" || parsedItem.name === "Forbidden Flame") {
-        // Fleshの場合は"on Forbidden Flame"、Flameの場合は"on Forbidden Flesh"で終わるmodをフィルタリング
-        const targetMod = parsedItem.name === "Forbidden Flesh" ? 
-          'modifier on Forbidden Flame' : 'modifier on Forbidden Flesh';
-        
+        // 両方のタイプのAllocates modをフィルタリング
         const allocatesMods = itemMods.filter(mod => 
-          mod.text.endsWith(targetMod)
+          mod.text.includes('Allocates') && mod.text.includes('if you have')
         );
         
         for (const itemMod of allocatesMods) {
-          // 対になるmodのIDを使用
-          const modId = parsedItem.name === "Forbidden Flesh" ? 
-            "explicit.stat_2460506030" : "explicit.stat_1190333629";
+          // modのタイプを判定
+          let modId: string;
+          if (itemMod.text.endsWith('modifier on Forbidden Flesh')) {
+            modId = "explicit.stat_1190333629"; // Forbidden Flame用のID
+          } else if (itemMod.text.endsWith('modifier on Forbidden Flame')) {
+            modId = "explicit.stat_2460506030"; // Forbidden Flesh用のID
+          } else {
+            // 通常のAllocates mod（対になるものではない）
+            const matchedMod = this.findMatchingMod(itemMod);
+            if (matchedMod) {
+              const filter = this.createStatFilter(itemMod, matchedMod);
+              filtersByType.explicit.push(filter);
+            }
+            continue;
+          }
+          
           const filter = this.createStatFilterForForbiddenJewel(itemMod, modId);
           if (filter) {
             filtersByType.explicit.push(filter);
@@ -312,7 +324,38 @@ export class ModMatcher {
       filtersByType.enchant.push(...clusterFilters);
       
       // Cluster Jewelのenchantは通常のマッチングをスキップ
-      const nonEnchantMods = itemMods.filter(mod => mod.type !== 'enchant');
+      const nonEnchantMods = itemMods.filter(mod => 
+        mod.type !== 'enchant' && 
+        !mod.text.includes('Added Small Passive Skills have') &&
+        !mod.text.startsWith('1 Added Passive Skill is')
+      );
+      
+      // "Added Small Passive Skills have" と "1 Added Passive Skill is" のパターンを検知
+      const addedSmallPassiveMods = itemMods.filter(mod => 
+        mod.text.includes('Added Small Passive Skills have')
+      );
+      
+      const addedPassiveSkillMods = itemMods.filter(mod => 
+        mod.text.startsWith('1 Added Passive Skill is')
+      );
+      
+      // "Added Small Passive Skills have" のパターンの処理
+      for (const itemMod of addedSmallPassiveMods) {
+        const matchedMod = this.findMatchingMod(itemMod);
+        if (matchedMod) {
+          const filter = this.createStatFilter(itemMod, matchedMod);
+          filtersByType.explicit.push(filter);
+        }
+      }
+      
+      // "1 Added Passive Skill is" のパターンの処理
+      for (const itemMod of addedPassiveSkillMods) {
+        const matchedMod = this.findMatchingMod(itemMod);
+        if (matchedMod) {
+          const filter = this.createStatFilter(itemMod, matchedMod);
+          filtersByType.explicit.push(filter);
+        }
+      }
       
       // 個別modのマッチング
       for (const itemMod of nonEnchantMods) {
