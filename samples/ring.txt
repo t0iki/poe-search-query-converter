@@ -1,0 +1,19 @@
+Rarity: Rare
+Hypnotic Circle
+Bone Ring
+--------
+Item Level: 84
+--------
+Requirements:
+Level: 64
+--------
+Your Chilling Towers freeze enemies for 0.2 seconds while they are affected by chilling beams (enchant)
+--------
+Minions have +15% to all Elemental Resistances (implicit)
+--------
++47 to maximum Energy Shield
++112 to maximum Life
++69 to maximum Mana
+Minions have 32% increased maximum Life
+Minions have 16% increased Attack and Cast Speed
+Minions have 22% increased Movement Speed (crafted)

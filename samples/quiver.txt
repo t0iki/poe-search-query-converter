@@ -1,0 +1,21 @@
+Rarity: Rare
+Dragon Bolt
+Broadhead Arrow Quiver
+--------
+Item Level: 85
+--------
+Requirements:
+Level: 65
+--------
+--------
+10% increased Attack Speed (implicit)
+--------
++37% to Critical Strike Multiplier with Bows (fractured)
+Adds 7 to 145 Lightning Damage to Attacks
+19% increased Global Critical Strike Chance
++122 to maximum Life
+41% increased Damage with Bow Skills
+7% chance to gain a Frenzy Charge on Critical Strike
+12% increased Attack Speed (crafted)
+--------
+Fractured Item

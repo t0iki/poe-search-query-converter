@@ -1,0 +1,22 @@
+Rarity: Unique
+Mageblood
+Heavy Belt
+--------
+Item Level: 85
+--------
+Quality (Resistance Modifiers): +20%
+--------
+Requirements:
+Level: 44
+--------
+--------
++35 to Strength (implicit)
+--------
++31 to Dexterity
++30% to Fire Resistance
++27% to Cold Resistance
+Magic Utility Flasks cannot be Used
+Leftmost 4 Magic Utility Flasks constantly apply their Flask Effects to you
+Magic Utility Flask Effects cannot be removed
+--------
+Rivers of power course through your veins.

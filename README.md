@@ -1,1 +1,0 @@
-# poe-search-query-converter

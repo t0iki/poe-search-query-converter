@@ -1,0 +1,31 @@
+Rarity: Rare
+Rift Star
+Lacquered Helmet
+--------
+Item Level: 86
+--------
+Quality: +20%
+Armour: 217
+Evasion Rating: 217
+--------
+Requirements:
+Level: 72
+Str: 111
+Dex: 159
+Int: 68
+--------
+Sockets: G-R-G G
+--------
+--------
+8% of Physical Damage from Hits taken as Cold Damage (implicit)
++1% to maximum Lightning Resistance (implicit)
+--------
++2 to Level of all Minion Skill Gems (fractured)
++14% chance to Suppress Spell Damage
++136 to maximum Life
++46% to Cold Resistance
++48% to Lightning Resistance
+18% increased Armour and Evasion (crafted)
++16 to maximum Life (crafted)
+--------
+Fractured Item
