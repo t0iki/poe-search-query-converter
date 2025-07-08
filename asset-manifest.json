@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/poe-search-query-converter/static/css/main.183b7f4d.css",
+    "main.js": "/poe-search-query-converter/static/js/main.739d138a.js",
+    "static/js/453.edc0586b.chunk.js": "/poe-search-query-converter/static/js/453.edc0586b.chunk.js",
+    "index.html": "/poe-search-query-converter/index.html",
+    "main.183b7f4d.css.map": "/poe-search-query-converter/static/css/main.183b7f4d.css.map",
+    "main.739d138a.js.map": "/poe-search-query-converter/static/js/main.739d138a.js.map",
+    "453.edc0586b.chunk.js.map": "/poe-search-query-converter/static/js/453.edc0586b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.183b7f4d.css",
+    "static/js/main.739d138a.js"
+  ]
+}
